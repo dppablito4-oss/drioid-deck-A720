@@ -131,6 +131,8 @@ android {
         release {
             minifyEnabled false
             signingConfig signingConfigs.testkey
+            applicationIdSuffix ".a720eval"
+            resValue "string", "app_name", "DroidDeck A720 Eval"
         }
     }
 
