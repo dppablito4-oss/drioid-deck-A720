@@ -63,6 +63,12 @@ object SessionState {
      *  gets DXVK_HDR=1 and gamescope --hdr-enabled. Decided by the activity before the compositor starts. */
     @JvmStatic var hdr = false
 
+    /** Live test control for the compositor's banner_ahb_v1 path. Process-wide so reopening the
+     *  activity shows the state that was last sent to the compositor; it is deliberately not a
+     *  saved preference and does not change HDR or any session setting. */
+    @Volatile
+    var zeroCopyTest = false
+
     /** Which session this is: SessionService.MODE_STEAM or MODE_DESKTOP. */
     @Volatile
     var mode = "steam"

@@ -132,6 +132,7 @@ class DrawerActions(
     val isHomeApp: Boolean,
     val androidApps: List<HomeApp.LaunchableApp>,
     val hudOn: Boolean,
+    val zeroCopyTestOn: Boolean,
     val frameGenEngine: String,
     val frameGenMultiplier: Int,
     val lsfgReady: Boolean,
@@ -148,6 +149,7 @@ class DrawerActions(
     val secondScreenDisplays: List<SecondScreenDisplay>,
     val selectedSecondScreenDisplay: Int,
     val onHud: (Boolean) -> Unit,
+    val onZeroCopyTest: (Boolean) -> Unit,
     val onFrameGenPick: (engine: String, multiplier: Int) -> Unit,
     /** The Android keyboard (text, turned into key presses). */
     val onKeyboard: () -> Unit,
@@ -311,6 +313,8 @@ fun SessionDrawer(open: Boolean, page: Int, controllerActive: Boolean, onPageCha
                         0 -> SettingsGroup("Display") {
                             ToggleRow(host, "hud", "Performance HUD", null, a.hudOn,
                                 chipModifier = focus.track(page, "hud"), onChange = a.onHud)
+                            ToggleRow(host, "zero-copy-test", "Zero-Copy AHB", null, a.zeroCopyTestOn,
+                                chipModifier = focus.track(page, "zero-copy-test"), onChange = a.onZeroCopyTest)
                             if (a.fillScreen != null) ToggleRow(
                                 host, "fill", "Stretch games to fill", null, a.fillScreen,
                                 chipModifier = focus.track(page, "fill"), onChange = a.onFillScreen,

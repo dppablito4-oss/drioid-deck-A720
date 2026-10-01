@@ -153,6 +153,7 @@ class SessionActivity : ComponentActivity(), SurfaceHolder.Callback {
     private var pcKeyboardOpen by mutableStateOf(false)
     private var hudOn by mutableStateOf(true)
     private var fillScreen by mutableStateOf(true)
+    private var zeroCopyTestOn by mutableStateOf(SessionState.zeroCopyTest)
     private var frameGenLabel by mutableStateOf("Off")
     private var frameGenEngine by mutableStateOf(FrameGen.ENGINE_OFF)
     private var frameGenMultiplier by mutableStateOf(2)
@@ -335,6 +336,7 @@ class SessionActivity : ComponentActivity(), SurfaceHolder.Callback {
                     isHomeApp = isHomeApp,
                     androidApps = androidApps,
                     hudOn = hudOn,
+                    zeroCopyTestOn = zeroCopyTestOn,
                     fillScreen = if (SessionState.mode == SessionService.MODE_STEAM) fillScreen else null,
                     frameGenEngine = frameGenEngine, frameGenMultiplier = frameGenMultiplier,
                     lsfgReady = LsfgNative.isInstalled(this@SessionActivity),
@@ -345,6 +347,12 @@ class SessionActivity : ComponentActivity(), SurfaceHolder.Callback {
                     secondScreenDisplays = secondScreenDisplays,
                     selectedSecondScreenDisplay = selectedSecondScreenDisplay,
                     onHud = { on -> SessionPrefs.setHudEnabled(this@SessionActivity, on); hudOn = on; hud.refresh() },
+                    onZeroCopyTest = { on ->
+                        WaylandCompositor.nativeSetZeroCopy(on)
+                        SessionState.zeroCopyTest = on
+                        zeroCopyTestOn = on
+                        Log.i("ZeroCopyTest", if (on) "enabled" else "disabled")
+                    },
                     onFillScreen = { on -> SessionPrefs.setForceFullscreen(this@SessionActivity, on); fillScreen = on },
                     onFrameGenPick = { engine, multiplier ->
                         FrameGen.set(this@SessionActivity, engine, multiplier)
